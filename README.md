@@ -28,28 +28,13 @@ python -m pip install -r requirements.txt --no-cache-dir
 ```
 **Preparing datasets**
 
-DeepTYLCV uses open genomic and protein datasets derived from Tomato Yellow Leaf Curl Virus (TYLCV) samples.
+DeepTYLCV uses Open Reading Frames(ORF) originated from Genomes sequences. ORF can be found in the data/ directory. In this project, we used 3 Protein Language models(PLM): ESM, ProtransAlbertBFD(PTAB), ProtransBertBFD(PTBB), and optimal concatenated conventional descriptors features(optCCDS) extracted from iFeatureOmega. We already extracted features for all of them and they can be downloaded from <a href="https://balalab-skku.org/DeepTYLCV/">OneDrive</a>.
 Sequences are converted into Open Reading Frames (ORFs) and represented using three Protein Language Models (PLMs) — ESM-1, ESM-2, and ProtT5 — fused with Conventional Descriptor Features (CCDs) computed using iFeatureOmega.
-
-You can:
-
-Download the extracted feature datasets from OneDrive
-
-Or generate your own features using the scripts in src/feature_extractor.py
-
-Each sample is represented as:
-
-PLM embeddings: ESM-2 (2560-dim), ESM-1 (1280-dim), ProtT5 (1024-dim)
-
-Conventional features (CCDs): 394 or 887 selected features depending on the model version
 
 **Configurations**
 
 You can find configuration files in the configs/ directory:
 
-config_DeepTYLCV_Hybrid.yaml — for Hybrid (NLP + CCD) mode
-
-config_DeepTYLCV_NLP_only.yaml — for PLM-based mode only
 
 Main parameters include:
 ```bash
@@ -82,34 +67,6 @@ trainer_config:
   threshold: 0.5
   output_path: checkpoints/DeepTYLCV_Hybrid
 ```
-**Predciting models**
-The DeepTYLCV_Predictor module in predictor.py allows you to run inference on extracted features:
-```bash
-from predictor import DeepTYLCV_Predictor
-import yaml
-
-config = yaml.safe_load(open('configs/config_DeepTYLCV_Hybrid.yaml'))
-
-predictor = DeepTYLCV_Predictor(
-    model_config=config['model_config'],
-    ckpt_dir='/path/to/ckpt/dir',
-    nfold=5,
-    device='cuda'
-)
-
-# Predict a single sample
-output = predictor.predict_one(
-    f1=feature_1,  # ESM-2 (1, L, 2560)
-    f2=feature_2,  # ESM-1 (1, L, 1280)
-    f3=feature_3,  # ProtT5 (1, L, 1024)
-    fccd=feature_ccd,  # CCD (1, 394 or 887)
-    threshold=0.5
-)
-```
-You can download pre-trained models and features from OneDrive
-.
-
-Note: The predictor expects extracted features. To automatically handle feature extraction, use the Inferencer described below.
 **Inferencing models**
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer:
 ```bash
