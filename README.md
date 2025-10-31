@@ -28,8 +28,7 @@ python -m pip install -r requirements.txt --no-cache-dir
 ```
 **Preparing datasets**
 
-DeepTYLCV uses Open Reading Frames(ORF) originated from Genomes sequences. ORF can be found in the data/ directory. In this project, we used 3 Protein Language models(PLM): ESM, ProtransAlbertBFD(PTAB), ProtransBertBFD(PTBB), and optimal concatenated conventional descriptors features(optCCDS) extracted from iFeatureOmega. We already extracted features for all of them and they can be downloaded from <a href="https://balalab-skku.org/DeepTYLCV/">OneDrive</a>.
-Sequences are converted into Open Reading Frames (ORFs) and represented using three Protein Language Models (PLMs) — ESM-1, ESM-2, and ProtT5 — fused with Conventional Descriptor Features (CCDs) computed using iFeatureOmega.
+DeepTYLCV uses Open Reading Frames(ORF) originated from Genomes sequences. ORF can be found in the data/ directory. In this project, we used 3 Protein Language models(PLM): ESM-1 (ESM), ProtTrans-ALBERT-BFD (PTAB), ProtTrans-BERT-BFD (PTBB). Which are provided in the Zenodo and optimal concatenated conventional descriptors features(optCCDS) are provided in the opt_CCD_features/ directory.
 
 **Configurations**
 
