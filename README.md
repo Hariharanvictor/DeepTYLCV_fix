@@ -22,3 +22,7 @@ conda create -n deeptylcv python=3.10
 conda activate deeptylcv
 ```
 Next, install the required dependencies:
+```bash
+cd DeepTYLCV/
+python -m pip install -r requirements.txt --no-cache-dir
+```
