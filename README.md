@@ -2,8 +2,7 @@
 <h1 align="center">DeepTYLCV</h1>
 <p align="center"><a href="https://balalab-skku.org/DeepTYLCV/">🌐 Webserver (CBBL-SKKU)</a> | <a href="https://1drv.ms/f/some_onedrive_link">🚩 Model & Dataset</a></p>
 
-The official implementation of **DeepTYLCV: An interpretable and experimentally validated AI model for predicting virulence in tomato yellow leaf curl virus** <img width="468" height="66" alt="image" src="https://github.com/user-attachments/assets/c6414c1a-a506-442c-aab9-8871d1c12664" />
-**
+The official implementation of **DeepTYLCV: An interpretable and experimentally validated AI model for predicting virulence in tomato yellow leaf curl virus**
 
 ## TOC
 
