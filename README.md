@@ -10,7 +10,7 @@ This project is summarized into:
 - [Installing environment](#installing-environment)
 - [Preparing datasets](#preparing-datasets)
 - [Configurations](#configurations)
-- [Predicting models](#predicting-models)
+- [Training models](#training-models)
 - [Inferencing models](#inferencing-models)
 
 ## Installing environment
@@ -38,33 +38,50 @@ You can find configuration files in the configs/ directory:
 Main parameters include:
 ```bash
 dataset:
-  dataset_root: Features/
-  feature_1_name: ESM_2
-  feature_2_name: ESM_1
-  feature_3_name: ProtT5
-  handcraft_name: CCD
-...
-model_config:
-  drop: 0.3
-  gated_dim: 256
-  handcraft_dim: 394        # or 887 based on CCD version
-  input_dim_1: 2560
-  input_dim_2: 1280
-  input_dim_3: 1024
+  conv_lmdb_path: /opt_CCD_features
+  data_root: /PLM
+  feature_list:
+  - ESMEmbedder
+  - ProtTransAlbertBFDEmbedder
+  - ProtTransBertBFDEmbedder
+  max_length: 363
+  mean: false
+  test_fasta_path: /data/test.fasta
+  train_dir: /data/5-fold-data
+  tran_nlp: true
+....
+model:
+  d_model: 128
+  dilation: 1
+  dp_size: 0.3
+  fc_1: 128
+  feature_dim_list:
+  - 1280
+  - 4096
+  - 1024
+  kernel_size:
+  - 5
+  - 7
+  - 9
+  max_concatenated_len: 363
   n_classes: 2
-  num_heads_attn: 2
-  num_heads_transformer: 2
-  num_layers_transformers: 2
-  num_mlp_layers: 4
+  n_head: 8
+  norm_type: batch
+  num_transformer_layers: 6
+  stride: 3
 ...
-trainer_config:
-  batch_size: 128
+trainer:
+  batch_size: 16
+  device: cpu
   epochs: 100
   lr: 0.0001
-  k_fold: 5
-  loss_fn: focal
-  threshold: 0.5
-  output_path: checkpoints/DeepTYLCV_Hybrid
+  num_workers: 4
+  output_path: results/
+```
+**Training models**
+To reconstruct the results from the paper, you can run two following commands:
+```bash
+python train.py --config_path /configs/config_DeepTYLCV.yaml --save_config
 ```
 **Inferencing models**
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer:
@@ -73,10 +90,10 @@ from predictor import DeepTYLCV_Predictor
 from inference import Inferencer
 import yaml
 
-config = yaml.safe_load(open('configs/config_DeepTYLCV_Hybrid.yaml'))
+config = yaml.safe_load(open('configs/config_DeepTYLCV.yaml'))
 
 predictor = DeepTYLCV_Predictor(
-    model_config=config['model_config'],
+    model_config=config['model'],
     ckpt_dir='/path/to/ckpt/dir',
     nfold=5,
     device='cuda'
