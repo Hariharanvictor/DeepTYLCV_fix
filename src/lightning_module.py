@@ -1,16 +1,16 @@
 import torch
 import torch.nn.functional as F
 import lightning as pl
-from .architecture import CONTRA_IL6, CONTRA_IL6_CONV
+from .architecture import DeepTYLCV_CONV
 from .loss import FocalLoss
 from .metrics import calculate_metrics
 import numpy as np
 
     
-class CONTRA_IL6_Module(pl.LightningModule):
+class DeepTYLCV_Module(pl.LightningModule):
     def __init__(self, model_config, trainer_config, loss_config):
-        super(CONTRA_IL6_Module, self).__init__()
-        self.model = CONTRA_IL6_CONV(**vars(model_config))
+        super(DeepTYLCV_Module, self).__init__()
+        self.model = DeepTYLCV_CONV(**vars(model_config))
         self.loss_fn = FocalLoss(alpha=torch.tensor(loss_config.alpha), gamma=loss_config.gamma)
         
         self.trainer_config = trainer_config

@@ -1,4 +1,4 @@
-from src.architecture import CONTRA_IL6_CONV
+from src.architecture import DeepTYLCV_CONV
 import torch
 from torch.nn.functional import softmax
 import os
@@ -6,7 +6,7 @@ import numpy as np
 from torch.nn import functional as F
 class DeepTYLCV_Predictor:
     def __init__(self, model_config, ckpt_dir, nfold, device):
-        self.models = [CONTRA_IL6_CONV(**model_config) for _ in range(nfold)]
+        self.models = [DeepTYLCV_CONV(**model_config) for _ in range(nfold)]
         self.device = device
         
         ckpt_paths = []

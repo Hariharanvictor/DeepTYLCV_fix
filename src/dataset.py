@@ -6,7 +6,7 @@ from lmdb_embeddings.reader import LmdbEmbeddingsReader
 from lmdb_embeddings.exceptions import MissingWordError
 # from utils import extract_headers_labels
 
-class IL6_Dataset(Dataset):
+class DeepTYLCV_Dataset(Dataset):
     def __init__(self, dataset_config,headers,labels, conv_features):
         self.feat_paths = []
         # self.neg_feat_paths = []
@@ -67,7 +67,7 @@ class IL6_Dataset(Dataset):
         return X, X_conv, masks_X, self.labels[idx]
     
     
-class IL6_Dataset_LMDB_embedding(Dataset):
+class DeepTYLCV_Dataset_LMDB_embedding(Dataset):
     def __init__(self, dataset_config,headers,labels):
         self.feat_paths = []
         # self.neg_feat_paths = []
