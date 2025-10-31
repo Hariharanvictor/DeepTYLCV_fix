@@ -21,14 +21,5 @@ Then create and activate the environment:
 conda create -n deeptylcv python=3.10
 conda activate deeptylcv
 
-cd DeepTYLCV/
-python -m pip install -r requirements.txt --no-cache-dir
-(Optional) If you want to run the Inferencer (inference.py), please clone the optimized iFeatureOmegaCLI
- repository inside the src/ directory.
-This version improves the performance of descriptor computation.
-
-cd src/
-git clone https://github.com/duongttr/iFeatureOmegaCLI
-cd ..
 
 
