@@ -20,4 +20,5 @@ Then create and activate the environment:
 ```bash
 conda create -n deeptylcv python=3.10
 conda activate deeptylcv
-
+```
+Next, install the required dependencies:
