@@ -1,0 +1,10 @@
+#Python
+__pycache__/
+calcuate_metrics.py
+#other files
+DeepTYLCV_webserver_data/
+#results_files
+*.csv
+real_optimal_headers.pkl
+ifeature_omega_data/
+supporting_code/
