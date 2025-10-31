@@ -1,0 +1,45 @@
+dataset:
+  conv_lmdb_path: /home/vinoth/Hari_proj/TYLCV/webserver/Github_code/data/lmdb_files/conventional
+  data_root: /home/vinoth/Hari_proj/TYLCV/webserver/Github_code/data/lmdb_files/PLM
+  feature_list:
+  - ESMEmbedder
+  - ProtTransAlbertBFDEmbedder
+  - ProtTransBertBFDEmbedder
+  max_length: 363
+  mean: false
+  test_fasta_path: /home/vinoth/Hari_proj/TYLCV/webserver/Github_code/data/Test/test.fasta
+  train_dir: /data/Vinoth_SDATA/TYLCV_Proj/1-data/corrected_data/1-fasta_format/5-fold-data
+  tran_nlp: true
+loss:
+  alpha:
+  - 0.9
+  - 0.1
+  gamma: 2
+model:
+  d_model: 128
+  dilation: 1
+  dp_size: 0.3
+  fc_1: 128
+  feature_dim_list:
+  - 1280
+  - 4096
+  - 1024
+  kernel_size:
+  - 5
+  - 7
+  - 9
+  max_concatenated_len: 363
+  n_classes: 2
+  n_head: 8
+  norm_type: batch
+  num_transformer_layers: 6
+  stride: 3
+save_config: true
+seed: 69
+trainer:
+  batch_size: 16
+  device: cpu
+  epochs: 100
+  lr: 0.0001
+  num_workers: 4
+  output_path: /home/vinoth/Hari_proj/TYLCV/webserver/Github_code/DeepTYLCV/DeepTYLCV_webserver_data/sweeper_59_part_2
