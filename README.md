@@ -19,7 +19,7 @@ cd DeepTYLCV/
 python -m pip install -r requirements.txt --no-cache-dir
 ```
 **Inferencing models**
-You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from link:
+You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from <a href="https://zenodo.org/records/17510705">🚩Models</a>:
 ```bash
 from predictor import DeepTYLCV_Predictor
 from inference import Inferencer
@@ -53,4 +53,3 @@ outputs_seq = infer.predict_sequences(
 # Save results
 infer.save_csv_file(outputs, 'DeepTYLCV_predictions.csv')
 ```
-DeepTYLCV provides an end-to-end deep learning pipeline — from feature extraction and model fusion to sequence-level prediction — to classify the severity of TYLCV infection using multi-scale PLM fusion and biological descriptors.
