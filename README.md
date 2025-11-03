@@ -26,63 +26,6 @@ Next, install the required dependencies:
 cd DeepTYLCV/
 python -m pip install -r requirements.txt --no-cache-dir
 ```
-**Preparing datasets**
-
-DeepTYLCV uses Open Reading Frames(ORF) originated from Genomes sequences. ORF can be found in the data/ directory. In this project, we used 3 Protein Language models(PLM): ESM-1 (ESM), ProtTrans-ALBERT-BFD (PTAB), ProtTrans-BERT-BFD (PTBB). Which are provided in the Zenodo and optimal concatenated conventional descriptors features(optCCDS) are provided in the opt_CCD_features/ directory.
-
-**Configurations**
-
-You can find configuration files in the configs/ directory:
-
-
-Main parameters include:
-```bash
-dataset:
-  conv_lmdb_path: /opt_CCD_features
-  data_root: /PLM
-  feature_list:
-  - ESMEmbedder
-  - ProtTransAlbertBFDEmbedder
-  - ProtTransBertBFDEmbedder
-  max_length: 363
-  mean: false
-  test_fasta_path: /data/test.fasta
-  train_dir: /data/5-fold-data
-  tran_nlp: true
-....
-model:
-  d_model: 128
-  dilation: 1
-  dp_size: 0.3
-  fc_1: 128
-  feature_dim_list:
-  - 1280
-  - 4096
-  - 1024
-  kernel_size:
-  - 5
-  - 7
-  - 9
-  max_concatenated_len: 363
-  n_classes: 2
-  n_head: 8
-  norm_type: batch
-  num_transformer_layers: 6
-  stride: 3
-...
-trainer:
-  batch_size: 16
-  device: cpu
-  epochs: 100
-  lr: 0.0001
-  num_workers: 4
-  output_path: results/
-```
-**Training models**
-To reconstruct the results from the paper, you can run two following commands:
-```bash
-python train.py --config_path /configs/config_DeepTYLCV.yaml --save_config
-```
 **Inferencing models**
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer:
 ```bash
