@@ -4,14 +4,6 @@
 
 The official implementation of **DeepTYLCV: An interpretable and experimentally validated AI model for predicting virulence in tomato yellow leaf curl virus**
 
-## TOC
-
-This project is summarized into:
-- [Installing environment](#installing-environment)
-- [Preparing datasets](#preparing-datasets)
-- [Configurations](#configurations)
-- [Training models](#training-models)
-- [Inferencing models](#inferencing-models)
 
 ## Installing environment
 First, install [Miniconda](https://docs.anaconda.com/miniconda/) or [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html).  
