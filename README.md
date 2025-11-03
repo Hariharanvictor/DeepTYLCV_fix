@@ -99,7 +99,7 @@ predictor = DeepTYLCV_Predictor(
     device='cuda'
 )
 
-infer = Inferencer(predictor, device='cuda')
+infer = Inferencer(predictor, scaler_path='/path/to/scaler/model' device='cuda')
 
 # Predict from FASTA file
 outputs = infer.predict_fasta_file(
