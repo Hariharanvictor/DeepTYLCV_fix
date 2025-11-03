@@ -19,7 +19,7 @@ cd DeepTYLCV/
 python -m pip install -r requirements.txt --no-cache-dir
 ```
 **Inferencing models**
-You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer:
+You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from link:
 ```bash
 from predictor import DeepTYLCV_Predictor
 from inference import Inferencer
