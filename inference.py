@@ -7,8 +7,9 @@ import torch
 import pickle
 
 class Inferencer:
-    def __init__(self,predictor,device='cpu'):
+    def __init__(self,predictor,scaler_path,device='cpu'):
         self.predictor = predictor
+        self.scaler_path=scaler_path
         self.esm=  ESM(device=device)
         self.ptab = PTAB(device=device)
         self.ptbb = PTBB(device=device)
@@ -34,7 +35,7 @@ class Inferencer:
         data_dict = self.read_fasta_file(fasta_file)
         keys = list(data_dict.keys())
         seqs = list(data_dict.values())
-        scaler_path = '/home/vinoth/Hari_proj/TYLCV/webserver/Github_code/DeepTYLCV/DeepTYLCV_webserver_data/scaler.pkl'
+        scaler_path = self.scaler_path
         total_batch_len = (len(seqs) // batch_size) + int(len(seqs) % batch_size == 0)
         esm_generator=self.esm.get_features_batch(seqs, batch_size=batch_size)
         ptab_generator=self.ptab.get_features_batch(seqs, batch_size=batch_size)
@@ -67,7 +68,7 @@ class Inferencer:
         keys = list(data_dict.keys())
         seqs = list(data_dict.values())
         total_batch_len = (len(seqs) // batch_size) + int(len(seqs) % batch_size == 0)
-        scaler_path = '/home/vinoth/Hari_proj/TYLCV/webserver/Github_code/DeepTYLCV/DeepTYLCV_webserver_data/scaler.pkl'
+        scaler_path = self.scaler_path
         esm_generator=self.esm.get_features_batch(seqs, batch_size=batch_size)
         ptab_generator=self.ptab.get_features_batch(seqs, batch_size=batch_size)
         ptbb_generator=self.ptbb.get_features_batch(seqs, batch_size=batch_size)
