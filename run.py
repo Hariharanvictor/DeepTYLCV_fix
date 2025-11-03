@@ -7,11 +7,11 @@ config = yaml.safe_load(open('/home/vinoth/Hari_proj/TYLCV/webserver/Github_code
 
 predictor = DeepTYLCV_Predictor(
     model_config=config['model'], # A dict of model configuration, which can be easily loaded from yaml config file (`model_config` key).
-    ckpt_dir='/home/vinoth/Hari_proj/TYLCV/webserver/Github_code/DeepTYLCV/DeepTYLCV_webserver_data/sweeper_59_part_2', # The path to all folds' checkpoints. 
+    ckpt_dir='/path/to/model_files', # The path to all folds' checkpoints. 
     nfold=5, # Number of checkpoints inside `ckpt_dir`. Please use 5, which is the default of our training configuration.
     device='cuda', # Device, 'cpu' or 'cuda'.
 )
-infer =  Inferencer(predictor, device='cuda') # You can use device 'cpu' or 'cuda', please be consistent with device of `predictor`
+infer =  Inferencer(predictor,scaler_path='path/to/scaler/model' device='cuda') # You can use device 'cpu' or 'cuda', please be consistent with device of `predictor`
 
 # Predict FASTA file
 # outputs = infer.predict_fasta_file(
