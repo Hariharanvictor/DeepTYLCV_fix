@@ -1,4 +1,3 @@
-# DeepTYLCV_fix
 <h1 align="center">DeepTYLCV</h1>
 <p align="center"><a href="https://balalab-skku.org/DeepTYLCV/">🌐 Webserver (CBBL-SKKU)</a> | <a href="https://zenodo.org/records/17510705">🚩 Models</a></p>
 
