@@ -59,6 +59,11 @@ trainer:
   num_workers: 4
   output_path: /path/to/save_results # mention path to save results
 ```
+## Configurations
+To reconstruct the results from the paper, you can run the following command to train the models:
+```bash
+python train.py --config_path configs/config_DeepTYLCV.yaml --save_config
+```
 **Inferencing models**
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from <a href="https://zenodo.org/records/17510705">Models</a>:
 ```bash
