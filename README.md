@@ -3,6 +3,19 @@
 
 The official implementation of **DeepTYLCV: An interpretable and experimentally validated AI model for predicting virulence in tomato yellow leaf curl virus**
 
+## TOC
+
+This project is summarized into:
+
+Installing environment
+Preparing datasets
+Configurations
+Training models
+NLP only
+Hybrid (NLP+CCDs)
+Predicting models
+Inferencing models
+Citation
 
 ## Installing environment
 First, install [Miniconda](https://docs.anaconda.com/miniconda/) or [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html).  
@@ -16,6 +29,16 @@ Next, install the required dependencies:
 ```bash
 cd DeepTYLCV/
 python -m pip install -r requirements.txt --no-cache-dir
+```
+## Preparing datasets
+
+The training and test ORFs used for this project is deposited in the data/. We used 3 main PLM models: ESM, PTAB and PTBB, and optimal concatenated conventional descritpors extracted from iFeatureOmega. We already extracted features for all of them and optimal concantenated features are available in opt_CCD_features/ and PLM features can be downloaded from <a href="https://zenodo.org/records/17510705">Zenodo</a>.
+
+## Configurations
+You can find the configurations inside configs/ folder.
+There are some parameters you should concentrate on:
+```bash
+
 ```
 **Inferencing models**
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from <a href="https://zenodo.org/records/17510705">Models</a>:
