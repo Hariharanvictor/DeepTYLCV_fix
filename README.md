@@ -38,7 +38,26 @@ The training and test ORFs used for this project is deposited in the data/. We u
 You can find the configurations inside configs/ folder.
 There are some parameters you should concentrate on:
 ```bash
-
+dataset:
+  conv_lmdb_path: /path/to/opt_CCD_features # mention the path to opt_CCDs features file
+  data_root: /path/to/PLM/features # mention the directory to PLM features
+  feature_list:
+  - ESMEmbedder
+  - ProtTransAlbertBFDEmbedder
+  - ProtTransBertBFDEmbedder
+  max_length: 363
+  mean: false
+  test_fasta_path: /path/to/test.fasta/file
+  train_dir: /path/to/train/5-fold/directory
+  tran_nlp: true
+...
+trainer:
+  batch_size: 16
+  device: cpu
+  epochs: 100
+  lr: 0.0001
+  num_workers: 4
+  output_path: /path/to/save_results # mention path to save results
 ```
 **Inferencing models**
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from <a href="https://zenodo.org/records/17510705">Models</a>:
