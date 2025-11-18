@@ -11,11 +11,7 @@ Installing environment
 Preparing datasets
 Configurations
 Training models
-NLP only
-Hybrid (NLP+CCDs)
-Predicting models
 Inferencing models
-Citation
 
 ## Installing environment
 First, install [Miniconda](https://docs.anaconda.com/miniconda/) or [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html).  
@@ -59,7 +55,7 @@ trainer:
   num_workers: 4
   output_path: /path/to/save_results # mention path to save results
 ```
-## Configurations
+## Training Models
 To reconstruct the results from the paper, you can run the following command to train the models:
 ```bash
 python train.py --config_path configs/config_DeepTYLCV.yaml --save_config
