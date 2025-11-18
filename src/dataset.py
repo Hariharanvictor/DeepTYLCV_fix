@@ -1,134 +1,87 @@
 from torch.utils.data import Dataset
-import torch
-import os
+import torch, os
 from torch.nn import functional as F
-from lmdb_embeddings.reader import LmdbEmbeddingsReader
-from lmdb_embeddings.exceptions import MissingWordError
-# from utils import extract_headers_labels
+import pandas as pd
+import numpy as np
+import gzip
 
 class DeepTYLCV_Dataset(Dataset):
-    def __init__(self, dataset_config,headers,labels, conv_features):
-        self.feat_paths = []
-        # self.neg_feat_paths = []
+    def __init__(self, dataset_config, headers, labels):
         self.dataset_config = dataset_config
-        self.embedding_types = 'mean_representations' if dataset_config.mean else 'representations'
-        self.max_length = dataset_config.max_length
-        self.headers = headers
-        self.labels = labels
-        self.conv_features = conv_features
-        for feature_name in dataset_config.feature_list:
-            self.feat_paths.append(
-                os.path.join(dataset_config.data_root, feature_name)
-            )
-        self._setup_keys()
-        self._preload_data()
-    
-    def get_pep_keys(self):
-        return self.pep_keys
-        
-    def _setup_keys(self):
-        self.pep_keys = [i for i in self.headers]
-        
-    def _preload_data(self):
+        self.max_length = int(dataset_config.max_length)
+        self.use_mean   = bool(dataset_config.mean)
+        self.headers    = list(headers)
+        self.labels     = list(labels)
+
+        # --- conventional features from Parquet ---
+        df = pd.read_parquet(dataset_config.conv_lmdb_path)
+        if df.index.name is None:
+            if "header" in df.columns:
+                df = df.set_index("header")
+            else:
+                raise ValueError("Parquet must have an index or a 'header' column.")
+        df = df.astype(np.float32).sort_index()
+
+        # stash as tensors for only the needed headers
+        self.conv = {}
+        for k in self.headers:
+            if k not in df.index:
+                raise KeyError(f"Conventional features missing for key: {k}")
+            self.conv[k] = torch.from_numpy(df.loc[k].to_numpy(copy=False)).float().contiguous()
+
+        # --- PLM feature paths (per-key .pt.gz files) ---
+        self.feat_paths = [os.path.join(dataset_config.data_root, name)
+                           for name in dataset_config.feature_list]
+
+        # preload all PLM tensors into memory
         self.data = {}
-        self.data_conv = {}
-        
-        for key in self.pep_keys:    
-            self.data[key] = [
-                torch.load(os.path.join(path, f'{key}.pt'))
-                for path in self.feat_paths
-            ]
-            self.data_conv[key] = self.conv_features[key]
-            
-            
-        
-        
-    
+        for key in self.headers:
+            self.data[key] = []
+            for path in self.feat_paths:
+                # Now looking for .pt.gz files instead of .pt
+                f_gz = os.path.join(path, f"{key}.pt.gz")
+                f_pt = os.path.join(path, f"{key}.pt")
+                
+                # Try compressed first, fallback to uncompressed
+                if os.path.exists(f_gz):
+                    with gzip.open(f_gz, 'rb') as gz_file:
+                        t = torch.load(gz_file, map_location="cpu")
+                elif os.path.exists(f_pt):
+                    t = torch.load(f_pt, map_location="cpu")
+                else:
+                    raise FileNotFoundError(f"Missing tensor file: {f_gz} or {f_pt}")
+                
+                if not isinstance(t, torch.Tensor):
+                    raise TypeError(f"Not a Tensor: {f_gz or f_pt}")
+                self.data[key].append(t.to(torch.float32).contiguous())
+
     def __len__(self):
-        return len(self.pep_keys)
-    
+        return len(self.headers)
+
     def __getitem__(self, idx):
-        pep_key = self.pep_keys[idx]
-        X = self.data[pep_key]
-        X_conv = self.data_conv[pep_key]
-        
-        len_tokens = [x.shape[0] if not self.dataset_config.mean else 1 for x in X]
-        
-        masks_X = [None for l in len_tokens]
-        
-        X = [x.detach() for x in X]
-        
-        if not self.dataset_config.mean:
-            for i in range(len(X)):
-                X[i] = F.pad(X[i], (0, 0, 0, self.max_length - X[i].size(0)), value=0)
-                masks_X[i] = torch.ones(self.max_length, dtype=torch.bool)
-                masks_X[i][:len_tokens[i]] = False
-        
-        return X, X_conv, masks_X, self.labels[idx]
-    
-    
-# class DeepTYLCV_Dataset_LMDB_embedding(Dataset):
-#     def __init__(self, dataset_config,headers,labels):
-#         self.feat_paths = []
-#         # self.neg_feat_paths = []
-#         self.dataset_config = dataset_config
-#         self.embedding_types = 'mean_representations' if dataset_config.mean else 'representations'
-#         self.max_length = dataset_config.max_length
-#         self.headers = headers
-#         self.labels = labels
-#         # self.embeddings=LmdbEmbeddingsReader(dataset_config.plm_lmdb_path)
-#         self.conv_features=LmdbEmbeddingsReader(dataset_config.conv_lmdb_path)
-#         for feature_name in dataset_config.feature_list:
-#             self.feat_paths.append(
-#                 os.path.join(dataset_config.data_root, feature_name)
-#             )
-#         self.embedding_list=[LmdbEmbeddingsReader(feat_path) for feat_path in self.feat_paths]
-#         # for feature_name in dataset_config.feature_list:
-#         #     self.feat_paths.append(
-#         #         os.path.join(dataset_config.data_root, feature_name)
-#         #     )
-#         self._setup_keys()
-#         # self._preload_data()
-    
-#     def get_pep_keys(self):
-#         return self.pep_keys
-        
-#     def _setup_keys(self):
-#         self.pep_keys = [i for i in self.headers]
-        
-#     # def _preload_data(self):
-#     #     self.data = {}
-#     #     self.data_conv = {}
-        
-#     #     for key in self.pep_keys:    
-#     #         self.data[key] = [
-#     #             torch.from_numpy(self.embeddings.get_word_vector(key))
-#     #         ]
-#     #         self.data_conv[key] = self.conv_features[key]
-            
-            
-        
-        
-    
-#     def __len__(self):
-#         return len(self.pep_keys)
-    
-#     def __getitem__(self, idx):
-#         pep_key = self.pep_keys[idx]
-#         X = [torch.from_numpy(embedding.get_word_vector(pep_key)) for embedding in self.embedding_list]
-#         # print(X.shape)
-#         X_conv = self.conv_features.get_word_vector(pep_key)
-        
-#         len_tokens = [x.shape[0] if not self.dataset_config.mean else 1 for x in X]
-        
-#         masks_X = [None for l in len_tokens]
-        
-#         X = [x.detach() for x in X]
-        
-#         if not self.dataset_config.mean:
-#             for i in range(len(X)):
-#                 X[i] = F.pad(X[i], (0, 0, 0, self.max_length - X[i].size(0)), value=0)
-#                 masks_X[i] = torch.ones(self.max_length, dtype=torch.bool)
-#                 masks_X[i][:len_tokens[i]] = False
-        
-#         return X, X_conv, masks_X, self.labels[idx]
+        key    = self.headers[idx]
+        X_list = [x.detach() for x in self.data[key]]  # list of [T,D] tensors
+        X_conv = self.conv[key]                        # [D]
+
+        if self.use_mean:
+            # mean over time, keep time dim = 1 for consistency
+            X_list = [x.mean(dim=0, keepdim=True) for x in X_list]
+            masks  = [None] * len(X_list)
+        else:
+            padded, masks = [], []
+            for x in X_list:
+                T = x.size(0)
+                if T > self.max_length:
+                    x = x[:self.max_length]
+                    T = self.max_length
+                pad = self.max_length - T
+                if pad > 0:
+                    x = F.pad(x, (0, 0, 0, pad), value=0.0)
+                m = torch.ones(self.max_length, dtype=torch.bool)
+                m[:T] = False
+                padded.append(x)
+                masks.append(m)
+            X_list = padded
+
+        y = self.labels[idx]
+        return X_list, X_conv, masks, y
