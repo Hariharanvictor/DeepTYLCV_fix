@@ -155,7 +155,7 @@ def train_nlp_conv(config):
     
     headers_all_fold=[]
     labels_all_fold=[]
-    fasta_files=sorted(glob.glob(f'{config.dataset.train_dir}/*.fasta'))
+    fasta_files=sorted(glob.glob(f'{config.dataset.train_dir}/fold_*.fasta'))
     for fasta_file in fasta_files: 
         header,label=extract_headers_labels(fasta_file)
         headers_all_fold.append(header)
