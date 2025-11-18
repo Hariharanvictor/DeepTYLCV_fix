@@ -1,5 +1,5 @@
 <h1 align="center">DeepTYLCV</h1>
-<p align="center"><a href="https://balalab-skku.org/DeepTYLCV/">🌐 Webserver (CBBL-SKKU)</a> | <a href="https://zenodo.org/records/17510705">🚩 Models</a></p>
+<p align="center"><a href="https://balalab-skku.org/DeepTYLCV/">🌐 Webserver (CBBL-SKKU)</a> | <a href="https://zenodo.org/records/17636038">🚩 Models</a></p>
 
 The official implementation of **DeepTYLCV: An interpretable and experimentally validated AI model for predicting virulence in tomato yellow leaf curl virus**
 
@@ -30,7 +30,7 @@ python -m pip install -r requirements.txt --no-cache-dir
 ```
 ## Preparing datasets
 
-The training and test ORFs used for this project is deposited in the data/. We used 3 main PLM models: ESM, PTAB and PTBB, and optimal concatenated conventional descritpors extracted from iFeatureOmega. We already extracted features for all of them and optimal concantenated features are available in opt_CCD_features/ and PLM features can be downloaded from <a href="https://zenodo.org/records/17510705">Zenodo</a>.
+The training and test ORFs used for this project is deposited in the data/. We used 3 main PLM models: ESM, PTAB and PTBB, and optimal concatenated conventional descritpors extracted from iFeatureOmega. We already extracted features for all of them and optimal concantenated features are available in opt_CCD_features/ and PLM features can be downloaded from <a href="https://zenodo.org/records/17636038">Zenodo</a>.
 
 ## Configurations
 You can find the configurations inside configs/ folder.
