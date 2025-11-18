@@ -7,3 +7,4 @@ tensorboard==2.19.0
 tensorboardX==2.6.4
 bio-embeddings==0.2.2
 iFeatureOmegaCLI==1.0.2
+pyarrow==22.0.0
