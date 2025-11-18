@@ -9,11 +9,11 @@ you can easily use DeepTYLCV tool with <a href="https://balalab-skku.org/DeepTYL
 
 This project is summarized into:
 
-Installing environment
-Preparing datasets
-Configurations
-Training models
-Inferencing models
+- [Installing environment](#installing-environment)
+- [Preparing datasets](#preparing-datasets)
+- [Configurations](#configurations)
+- [Training models](#training-models)
+- [Inferencing models](#inferencing-models)
 
 ## Installing environment
 First, install [Miniconda](https://docs.anaconda.com/miniconda/) or [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html).  
