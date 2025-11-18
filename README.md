@@ -3,6 +3,8 @@
 
 The official implementation of **DeepTYLCV: An interpretable and experimentally validated AI model for predicting virulence in tomato yellow leaf curl virus**
 
+you can easily use DeepTYLCV tool with <p align="center"><a href="https://balalab-skku.org/DeepTYLCV/">🌐 Webserver (CBBL-SKKU)</a> or follow the below steps to train or inference the DeepTYLCV model.  
+
 ## TOC
 
 This project is summarized into:
@@ -60,7 +62,7 @@ To reconstruct the results from the paper, you can run the following command to 
 ```bash
 python train.py --config_path configs/config_DeepTYLCV.yaml --save_config
 ```
-**Inferencing models**
+## Inferencing models
 You can easily predict directly from FASTA files or sequence dictionaries using the Inferencer by giving path to the model files. model files can be downloaded from <a href="https://zenodo.org/records/17510705">Models</a>:
 ```bash
 from predictor import DeepTYLCV_Predictor
